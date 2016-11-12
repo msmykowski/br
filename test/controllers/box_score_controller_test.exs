@@ -33,15 +33,22 @@ defmodule Br.BoxScoreControllerTest do
   test "create with a valid body", %{conn: conn} do
     response = post conn, box_score_path(conn, :create), box_score: @box_score 
     assert response.status == 201
+
     assert Repo.one(from b in BoxScore, select: count("*")) == 1
     #assert Repo.one(from p in Player, select: count("*")) == 3
-    #assert Repo.get_by!(RushingStat, @rushing_stat).player_id == Repo.get_by!(Player, @player_one).id
-    #assert Repo.get_by!(RushingStat, @rushing_stat).box_score_id == Repo.get_by!(Player, @player_one).id
-    #assert Repo.get_by!(ReceivingStat, @receiving_stat).player_id == Repo.get_by!(Player, @player_one).id
-    #assert Repo.get_by!(ReceivingStat, @receiving_stat).box_score_id == Repo.get_by!(Player, @player_one).id
-    #assert Repo.get_by!(PassingStat, @passing_stat).player_id == Repo.get_by!(Player, @player_two).id
-    #assert Repo.get_by!(PassingStat, @passing_stat).box_score_id == Repo.get_by!(Player, @player_two).id
-    #assert Repo.get_by!(KickingStat, @kicking_stat).player_id == Repo.get_by!(Player, @player_three).id
-    #assert Repo.get_by!(KickingStat, @kicking_stat).box_score_id == Repo.get_by!(Player, @player_three).id
+
+    box_score_id = Repo.get_by!(BoxScore, timestamp: @box_score.timestamp).id
+    player_one_id = Repo.get_by!(Player, @player_one).id
+    player_two_id = Repo.get_by!(Player, @player_two).id
+    player_three_id = Repo.get_by!(Player, @player_three).id
+
+    assert Repo.get_by!(RushingStat, @rushing_stat).player_id == player_one_id 
+    assert Repo.get_by!(RushingStat, @rushing_stat).box_score_id == box_score_id
+    assert Repo.get_by!(ReceivingStat, @receiving_stat).player_id == player_one_id
+    assert Repo.get_by!(ReceivingStat, @receiving_stat).box_score_id == box_score_id
+    assert Repo.get_by!(PassingStat, @passing_stat).player_id == player_two_id
+    assert Repo.get_by!(PassingStat, @passing_stat).box_score_id == box_score_id
+    assert Repo.get_by!(KickingStat, @kicking_stat).player_id == player_three_id
+    assert Repo.get_by!(KickingStat, @kicking_stat).box_score_id == box_score_id
   end
 end

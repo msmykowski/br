@@ -1,16 +1,17 @@
 defmodule Br.TestHelpers do
-  alias Br.Repo
 
   def build_player(attrs \\ %{}) do
     Dict.merge(%{
-      player_id: 'random-id',
-      entry_id: 'random-entry-id',
-      name: 'some-name',
-      position: 'RB'
+      player_id: "random-id",
+      entry_id: "random-entry-id",
+      name: "some-name",
+      position: "RB"
     }, attrs)
   end
 
-  def build_stat("Rushing", attrs \\ %{}) do
+  def build_stat(type, attrs \\ %{})
+
+  def build_stat("Rushing", attrs) do
     Dict.merge(%{
       yds: 5,
       att: 5,
