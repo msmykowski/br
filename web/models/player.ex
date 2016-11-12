@@ -11,5 +11,7 @@ defmodule Br.Player do
     has_many :receiving_stats, ReceivingStat
     has_many :passing_stats, PassingStat
     has_many :kicking_stats, KickingStat
+
+    timestamps
   end
 end

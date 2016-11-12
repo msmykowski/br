@@ -8,5 +8,7 @@ defmodule Br.ReceivingStat do
     
     belongs_to :box_score, Br.BoxScore
     belongs_to :player, Br.Player
+
+    timestamps
   end
 end
