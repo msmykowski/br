@@ -3,8 +3,9 @@ defmodule Br.BoxScoreController do
   alias Br.BoxScore
 
   def create(conn, %{"box_score" => box_score}) do
-    box_score = transform_data(box_score)
-    changeset = BoxScore.changeset(%BoxScore{rushing_stats: [%Br.RushingStat{}]}, box_score)
+    box_score = Br.BoxScoreParser.transform_data(box_score)
+    IO.inspect box_score
+    changeset = BoxScore.changeset(%BoxScore{rushing_stats: [%Br.RushingStat{player: %Br.Player{}}]}, box_score)
 
     case Repo.insert(changeset) do
       {:ok, box_score} ->
