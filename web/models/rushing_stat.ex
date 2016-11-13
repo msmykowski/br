@@ -16,7 +16,7 @@ defmodule Br.RushingStat do
   def changeset(model, params \\ :empty) do
     model
     |> cast(params, [:yds, :att, :tds, :fum])
-    |> IO.inspect
     |> validate_required([:yds, :att, :tds, :fum])
+    |> cast_assoc(:player, required: true)
   end
 end

@@ -1,9 +1,10 @@
 defmodule Br.RushingStatTest do
   use Br.ModelCase, async: true 
   alias Br.RushingStat
+  import Br.TestHelpers
 
   @valid_attrs %{
-    player: %{},
+    player: build_player,
     yds: 10,
     att: 3,
     tds: 0,
