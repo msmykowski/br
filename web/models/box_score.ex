@@ -21,5 +21,8 @@ defmodule Br.BoxScore do
     |> cast(params, [:timestamp, :sport_name, :competition_name, :season_id, :week])
     |> validate_required([:timestamp, :sport_name, :competition_name, :season_id, :week])
     |> cast_assoc(:rushing_stats)
+    |> cast_assoc(:receiving_stats)
+    |> cast_assoc(:passing_stats)
+    |> cast_assoc(:kicking_stats)
   end
 end

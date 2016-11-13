@@ -13,4 +13,11 @@ defmodule Br.PassingStat do
 
     timestamps
   end
+
+  def changeset(model, params \\ :empty) do
+    model
+    |> cast(params, [:yds, :tds, :att, :cmp, :int])
+    |> validate_required([:yds, :tds, :att, :cmp, :int])
+    |> cast_assoc(:player, required: true)
+  end
 end

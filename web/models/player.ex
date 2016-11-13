@@ -7,10 +7,10 @@ defmodule Br.Player do
     field :name, :string
     field :position, :string
 
-    has_many :rushing_stats, RushingStat
-    has_many :receiving_stats, ReceivingStat
-    has_many :passing_stats, PassingStat
-    has_many :kicking_stats, KickingStat
+    has_many :rushing_stats, Br.RushingStat
+    has_many :receiving_stats, Br.ReceivingStat
+    has_many :passing_stats, Br.PassingStat
+    has_many :kicking_stats, Br.KickingStat
 
     timestamps
   end
