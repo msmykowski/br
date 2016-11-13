@@ -12,4 +12,11 @@ defmodule Br.RushingStat do
 
     timestamps
   end
+
+  def changeset(model, params \\ :empty) do
+    model
+    |> cast(params, [:yds, :att, :tds, :fum])
+    |> IO.inspect
+    |> validate_required([:yds, :att, :tds, :fum])
+  end
 end

@@ -5,7 +5,7 @@ defmodule Br.Router do
     plug :accepts, ["json"]
   end
 
-  scope "/v1", Br do
+  scope "/", Br do
     pipe_through :api
     
     resources "/box_scores", BoxScoreController, only: [:create]

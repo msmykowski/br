@@ -24,10 +24,10 @@ defmodule Br.BoxScoreControllerTest do
     sportName: "Football",
     competitionName: "NFL_Reg",
     seasonID: "NFL_2014",
-    rushing: Dict.merge(@player_one, @rushing_stat),
-    receiving: Dict.merge(@player_one, @receiving_stat),
-    passing: Dict.merge(@player_two, @passing_stat),
-    kicking: Dict.merge(@player_three, @kicking_stat)
+    rushing: [Dict.merge(@player_one, @rushing_stat)],
+    receiving: [Dict.merge(@player_one, @receiving_stat)],
+    passing: [Dict.merge(@player_two, @passing_stat)],
+    kicking: [Dict.merge(@player_three, @kicking_stat)]
   }
 
   test "create with a valid body", %{conn: conn} do
@@ -35,20 +35,27 @@ defmodule Br.BoxScoreControllerTest do
     assert response.status == 201
 
     assert Repo.one(from b in BoxScore, select: count("*")) == 1
-    #assert Repo.one(from p in Player, select: count("*")) == 3
+    assert Repo.one(from p in Player, select: count("*")) == 3
 
     box_score_id = Repo.get_by!(BoxScore, timestamp: @box_score.timestamp).id
     player_one_id = Repo.get_by!(Player, @player_one).id
     player_two_id = Repo.get_by!(Player, @player_two).id
     player_three_id = Repo.get_by!(Player, @player_three).id
 
-    assert Repo.get_by!(RushingStat, @rushing_stat).player_id == player_one_id 
-    assert Repo.get_by!(RushingStat, @rushing_stat).box_score_id == box_score_id
-    assert Repo.get_by!(ReceivingStat, @receiving_stat).player_id == player_one_id
-    assert Repo.get_by!(ReceivingStat, @receiving_stat).box_score_id == box_score_id
-    assert Repo.get_by!(PassingStat, @passing_stat).player_id == player_two_id
-    assert Repo.get_by!(PassingStat, @passing_stat).box_score_id == box_score_id
-    assert Repo.get_by!(KickingStat, @kicking_stat).player_id == player_three_id
-    assert Repo.get_by!(KickingStat, @kicking_stat).box_score_id == box_score_id
+    rushing_stat = Repo.get_by!(RushingStat, @rushing_stat);
+    assert rushing_stat.player_id == player_one_id
+    assert rushing_stat.box_score_id == box_score_id
+
+    receiving_stat = Repo.get_by!(ReceivingStat, @receiving_stat);
+    assert receiving_stat.player_id == player_one_id
+    assert receiving_stat.box_score_id == box_score_id
+
+    passing_stat = Repo.get_by!(PassingStat, @passing_stat);
+    assert passing_stat.player_id == player_two_id
+    assert passing_stat.box_score_id == box_score_id
+
+    kicking_stat = Repo.get_by!(KickingStat, @kicking_stat)
+    assert kicking_stat.player_id == player_three_id
+    assert kicking_stat.box_score_id == box_score_id
   end
 end

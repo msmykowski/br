@@ -20,5 +20,6 @@ defmodule Br.BoxScore do
     model
     |> cast(params, [:timestamp, :sport_name, :competition_name, :season_id, :week])
     |> validate_required([:timestamp, :sport_name, :competition_name, :season_id, :week])
+    |> cast_assoc(:rushing_stats)
   end
 end
