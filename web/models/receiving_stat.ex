@@ -12,10 +12,10 @@ defmodule Br.ReceivingStat do
     timestamps
   end
 
-  def changeset(model, params \\ :empty) do
+  def changeset(model, params) do
     model
     |> cast(params, [:yds, :tds, :rec])
     |> validate_required([:yds, :tds, :rec])
-    |> cast_assoc(:player, required: true)
+    |> put_assoc(:player, params["player"])
   end
 end

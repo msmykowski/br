@@ -13,10 +13,10 @@ defmodule Br.KickingStat do
     timestamps
   end
 
-  def changeset(model, params \\ :empty) do
+  def changeset(model, params) do
     model
     |> cast(params, [:fld_goals_made, :fld_goals_att, :extra_pt_made, :extra_pt_att])
     |> validate_required([:fld_goals_made, :fld_goals_att, :extra_pt_made, :extra_pt_att])
-    |> cast_assoc(:player, required: true)
+    |> put_assoc(:player, params["player"])
   end
 end
