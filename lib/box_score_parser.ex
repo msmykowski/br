@@ -1,5 +1,22 @@
 defmodule Br.BoxScoreParser do
-  def transform_data(box_score) do
+  @player_attrs ["rushing", "receiving", "passing", "kicking"]
+  
+  def get_players(box_score) do
+    box_score
+    |> Map.take(@player_attrs)
+    |> Map.values
+    |> List.flatten
+    |> Enum.reduce(%{}, &key_by_player_id/2)
+  end
+
+  defp key_by_player_id(stat, acc) do
+    player = stat
+      |> Map.take(["player_id", "entry_id", "name", "position"])
+    
+    Map.put_new(acc, player["player_id"], player)
+  end
+
+  def transform_data(box_score, player) do
     box_score
     |> Enum.into(%{}, fn {k, v} -> rename_keys(k, v) end)
   end

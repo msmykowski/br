@@ -8,6 +8,6 @@ defmodule Br.Router do
   scope "/", Br do
     pipe_through :api
     
-    resources "/box_scores", BoxScoreController, only: [:create]
+    resources "/box_scores", BoxScoreController, only: [:create, :show]
   end
 end

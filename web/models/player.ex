@@ -15,10 +15,9 @@ defmodule Br.Player do
     timestamps
   end
 
-  def changeset(model, params \\ :empty) do
+  def changeset(model, params \\ :invalid) do
     model
     |> cast(params, [:player_id, :entry_id, :name, :position])
     |> validate_required([:player_id, :entry_id, :name, :position])
-    |> unique_constraint(:player_id, :entry_id)
   end
 end
