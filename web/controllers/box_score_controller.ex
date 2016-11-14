@@ -14,34 +14,19 @@ defmodule Br.BoxScoreController do
         conn
         |> put_status(:created)
         |> render("created.json", %{id: box_score.id})
+      {:error, changeset} -> 
+        conn
+        |> put_status(422)
+        |> render(Br.ErrorView, "422.json", %{errors: changeset.errors})
     end
   end
 
   def show(conn, %{"id" => id, "players" => players}) do
-    player_query = from p in Br.Player, select: %{player_id: p.player_id, name: p.name, position: p.position, entry_id: p.entry_id}
-    ru_query = from ru in Br.RushingStat,
-      where: ru.player_id in ^players, 
-      preload: [player: ^player_query]
-    re_query = from re in Br.ReceivingStat, 
-      where: re.player_id in ^players,
-      preload: [player: ^player_query]
-    pa_query = from pa in Br.PassingStat,
-      where: pa.player_id in ^players,
-      preload: [player: ^player_query]
-    ki_query = from ki in Br.KickingStat,
-      where: ki.player_id in ^players,
-      preload: [player: ^player_query]
-    
-    query = from b in BoxScore,
-      where: b.id == ^id,
-      preload: [
-        rushing_stats: ^ru_query, 
-        receiving_stats: ^re_query, 
-        passing_stats: ^pa_query,
-        kicking_stats: ^ki_query
-      ]
-
-    case Repo.one(query) do
+    case Repo.one(box_score_query(id, players)) do
+      nil ->
+        conn
+        |> put_status(404)
+        |> render(Br.ErrorView, "404.json")
       box_score ->
         conn
         |> put_status(:ok)
@@ -62,5 +47,30 @@ defmodule Br.BoxScoreController do
     end
     
     Map.put_new(acc, player_id, model)
+  end
+
+  defp box_score_query(id, players) do
+    player_query = from p in Br.Player, select: %{player_id: p.player_id, name: p.name, position: p.position, entry_id: p.entry_id}
+    ru_query = from ru in Br.RushingStat,
+      where: ru.player_id in ^players, 
+      preload: [player: ^player_query]
+    re_query = from re in Br.ReceivingStat, 
+      where: re.player_id in ^players,
+      preload: [player: ^player_query]
+    pa_query = from pa in Br.PassingStat,
+      where: pa.player_id in ^players,
+      preload: [player: ^player_query]
+    ki_query = from ki in Br.KickingStat,
+      where: ki.player_id in ^players,
+      preload: [player: ^player_query]
+    
+    from b in BoxScore,
+      where: b.id == ^id,
+      preload: [
+        rushing_stats: ^ru_query, 
+        receiving_stats: ^re_query, 
+        passing_stats: ^pa_query,
+        kicking_stats: ^ki_query
+      ]
   end
 end

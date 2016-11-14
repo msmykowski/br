@@ -62,6 +62,11 @@ defmodule Br.BoxScoreControllerTest do
     assert kicking_stat.box_score_id == box_score_id
   end
 
+  test "create when body is invalid", %{conn: conn} do
+    response = post conn, box_score_path(conn, :create), box_score: %{}
+    assert response.status == 422
+  end
+
   test "show when record is existing", %{conn: conn} do
     {:ok, player_one} = Repo.insert(%Player{} |> Map.merge(@player_one))
     {:ok, player_two} = Repo.insert(%Player{} |> Map.merge(@player_two))
@@ -90,6 +95,11 @@ defmodule Br.BoxScoreControllerTest do
       passing: [],
       receiving: [Map.merge(receiving_stat, @player_one) |> Map.delete(:box_score_id)],
       rushing: [Map.merge(rushing_stat, @player_one) |> Map.delete(:box_score_id)]})
+  end
+
+  test "show when the record does not exist", %{conn: conn} do
+    response = get conn, box_score_path(conn, :show, 1, players: [1])
+    assert response.status == 404
   end
 end
 

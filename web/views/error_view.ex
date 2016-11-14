@@ -1,6 +1,13 @@
 defmodule Br.ErrorView do
   use Br.Web, :view
 
+  def render("422.json", %{errors: errors}) do
+    errors = errors
+    |> Enum.map(fn {k, {v, _}} -> %{k: v} end)
+
+    %{errors: errors}
+  end
+
   def render("404.json", _assigns) do
     %{errors: %{detail: "Page not found"}}
   end
