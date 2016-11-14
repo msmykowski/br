@@ -16,7 +16,7 @@ defmodule Br.BoxScore do
     timestamps
   end
 
-  def changeset(model, params \\ :empty) do
+  def changeset(model, params) do
     model
     |> cast(params, [:timestamp, :sport_name, :competition_name, :season_id, :week])
     |> validate_required([:timestamp, :sport_name, :competition_name, :season_id, :week])
