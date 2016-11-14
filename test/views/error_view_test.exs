@@ -6,7 +6,7 @@ defmodule Br.ErrorViewTest do
 
   test "renders 404.json" do
     assert render(Br.ErrorView, "404.json", []) ==
-           %{errors: %{detail: "Page not found"}}
+           %{errors: %{detail: "Record not found"}}
   end
 
   test "render 500.json" do
